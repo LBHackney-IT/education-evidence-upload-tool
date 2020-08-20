@@ -1,0 +1,55 @@
+{
+  "name": "education-evidence-upload-tool",
+  "version": "1.0.0",
+  "description": "A simple tool to enable Hackney residents to upload evidence for education",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline start -s dev",
+    "debug": "node --inspect ./node_modules/serverless/bin/serverless offline -s dev",
+    "dynamo": "sls dynamodb start -s dev",
+    "dynamo-install": "sls dynamodb install",
+    "cypress-ui": "npx cypress open --env JWT_SECRET=my_secret",
+    "test-server": "sls offline start -s test",
+    "test": "cypress run",
+    "unit-test": "jest --verbose",
+    "ci": "start-server-and-test test-server http://localhost:3000/login test",
+    "deploy": "sls deploy --aws-profile education-evidence --stage production",
+    "lint": "eslint --fix --ext js ./*.js && echo 'Lint complete.'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LBHackney-IT/education-evidence-upload-tool.git"
+  },
+  "author": "Ben Pirt and Matthew Millar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LBHackney-IT/education-evidence-upload-tool/issues"
+  },
+  "homepage": "https://github.com/LBHackney-IT/education-evidence-upload-tool#readme",
+  "devDependencies": {
+    "aws-sdk": "^2.650.0",
+    "cypress": "^4.3.0",
+    "cypress-file-upload": "^4.0.4",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^25.4.0",
+    "prettier": "^1.18.2",
+    "serverless": "^1.67.0",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^5.12.1",
+    "serverless-offline-ssm": "^4.1.2",
+    "serverless-s3-local": "^0.5.4",
+    "start-server-and-test": "^1.10.11"
+  },
+  "dependencies": {
+    "@sentry/node": "^5.15.2",
+    "cookie": "^0.4.0",
+    "handlebars": "^4.7.6",
+    "jsonwebtoken": "^8.5.1",
+    "lambda-api": "^0.10.5",
+    "moment-timezone": "^0.5.28",
+    "nanoid": "^3.1.3"
+  }
+}

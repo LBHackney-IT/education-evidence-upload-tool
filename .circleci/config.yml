@@ -1,0 +1,88 @@
+version: 2.1
+
+executors:
+  node:
+    docker:
+      - image: circleci/node:12.13
+    working_directory: ~/repo
+
+jobs:
+  build:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install default-jre
+            npm install
+            ./node_modules/serverless/bin/serverless dynamodb install
+            sudo apt-get install libxss1
+      - run:
+          name: Run linting
+          command: npm run lint
+      - run:
+          name: Run unit tests
+          command: npm run unit-test -- --ci
+      - run:
+          name: Run tests
+          environment:
+            CYPRESS_JWT_SECRET: my_secret
+          command: |
+            echo -e "/education-evidence-upload-tool/SENTRY_DSN=my_sentry_dsn\n/common/hackney-jwt-secret=my_secret" >> .env
+            npm run ci
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  deploy:
+    executor: node
+    parameters:
+      stage_name:
+        type: string
+      AWS_ACCESS_KEY_ID:
+        type: string
+      AWS_SECRET_ACCESS_KEY:
+        type: string
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Install serverless
+          command: sudo npm i -g serverless
+      - run:
+          name: Npm prune
+          command: npm prune --production
+      - run:
+          name: Set AWS credentials
+          command: sls --provider aws --key << parameters.AWS_ACCESS_KEY_ID >> --secret << parameters.AWS_SECRET_ACCESS_KEY >> --profile education-evidence
+      - run:
+          name: Deploy application
+          command: ./node_modules/serverless/bin/serverless deploy -s << parameters.stage_name >>
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          name: deploy-staging
+          stage_name: staging
+          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_STAGING}
+          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_STAGING}
+          filters:
+            branches:
+              only: master
+          requires:
+            - build
+      - permit-deploy-production:
+          type: approval
+          requires:
+            - deploy-staging
+      - deploy:
+          name: deploy-production
+          stage_name: production
+          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_PRODUCTION}
+          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_PRODUCTION}
+          requires:
+            - permit-deploy-production

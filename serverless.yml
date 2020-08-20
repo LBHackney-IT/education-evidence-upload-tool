@@ -1,0 +1,186 @@
+service: education-evidence-upload-tool
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: eu-west-2
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - s3:PutObject
+        - s3:GetObject
+        - s3:DeleteObject
+        - s3:ListBucket
+      Resource: '*'
+  environment:
+    DROPBOXES_TABLE: '${self:service}-${self:provider.stage}-dropboxes'
+    UPLOADS_BUCKET: '${self:service}-${self:provider.stage}-uploads'
+    SENTRY_DSN: ${ssm:/education-evidence-upload-tool/SENTRY_DSN}
+    URL_PREFIX: ${self:custom.endpoints.${self:provider.stage}}
+    MAX_UPLOAD_BYTES: 20_971_520
+    HACKNEY_TOKEN_SECRET: ${ssm:/common/hackney-jwt-secret}
+    CUSTOMER_TOKEN_SECRET: ${ssm:/common/customer-jwt-secret~true}
+    stage: ${self:provider.stage}
+
+custom:
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+  s3:
+    port: 8100
+    directory: ./.s3local
+    host: localhost
+    address: localhost
+    allowMismatchedSignatures: true
+  endpoints:
+    dev: http://${self:custom.aliases.${self:provider.stage}}
+    test: http://${self:custom.aliases.${self:provider.stage}}
+    staging: https://${self:custom.aliases.${self:provider.stage}}
+    production: https://${self:custom.aliases.${self:provider.stage}}
+  domain-name:
+    Fn::Join:
+      - '.'
+      - - Ref: ApiGatewayRestApi
+        - execute-api
+        - eu-west-2
+        - amazonaws.com
+  aliases:
+    dev: localhost:3000
+    test: localhost:3000
+    staging: education-evidence-staging.hackney.gov.uk
+    production: education-evidence.hackney.gov.uk
+
+plugins:
+  - serverless-offline
+  - serverless-offline-ssm
+  - serverless-dynamodb-local
+  - serverless-s3-local
+
+package:
+  individually: true
+  exclude:
+    - ./**
+
+functions:
+  root:
+    handler: root.handler
+    package:
+      include:
+        - root.js
+    events:
+      - http:
+          path: /
+          method: GET
+  saveDropbox:
+    handler: lambda.saveDropboxHandler
+    package:
+      include:
+        - lambda.js
+        - lib/**
+        - static/**
+        - templates/**
+        - node_modules/**
+    events:
+      - http:
+          path: '/dropboxes/{dropboxId}'
+          method: POST
+  app:
+    handler: lambda.handler
+    package:
+      include:
+        - lambda.js
+        - lib/**
+        - static/**
+        - templates/**
+        - node_modules/**
+    events:
+      - http:
+          path: '{proxy+}'
+          method: ANY
+
+resources:
+  Resources:
+    UploadsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.UPLOADS_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        BucketEncryption:
+          ServerSideEncryptionConfiguration:
+            - ServerSideEncryptionByDefault:
+                SSEAlgorithm: AES256
+    UploadsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: dropboxId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: dropboxId
+            KeyType: HASH
+        BillingMode: PROVISIONED
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        TableName: ${self:provider.environment.DROPBOXES_TABLE}
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${self:custom.aliases.${self:provider.stage}}
+          PriceClass: PriceClass_100
+          ViewerCertificate:
+            AcmCertificateArn: arn:aws:acm:us-east-1:402949050862:certificate/a2642366-3457-42b3-bd0b-06a9350c1cd8
+            MinimumProtocolVersion: TLSv1.2_2018
+            SslSupportMethod: sni-only
+          DefaultCacheBehavior:
+            TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
+            ViewerProtocolPolicy: 'redirect-to-https'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+            DefaultTTL: 0
+            MaxTTL: 0
+            MinTTL: 0
+            ForwardedValues:
+              QueryString: true
+              Headers:
+                - Authorization
+              Cookies:
+                Forward: all
+          Enabled: true
+          Origins:
+            - Id: ${self:service}-${self:provider.stage}-custom-origin
+              DomainName: ${self:custom.domain-name}
+              OriginPath: /${self:provider.stage}
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
