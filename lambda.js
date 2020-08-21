@@ -12,20 +12,6 @@ const {
 } = require('./lib/Dependencies');
 const querystring = require('querystring');
 const api = require('lambda-api')();
-const Sentry = require('@sentry/node');
-
-if (process.env.stage === 'production') {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN
-  });
-
-  api.use(async (err, req, res, next) => {
-    console.log(err);
-    console.log(`Sentry eventId: ${Sentry.captureException(err)}`);
-    await Sentry.flush();
-    next();
-  });
-}
 
 api.get('/css/:filename', async (req, res) => {
   res.sendFile(req.params.filename, {
@@ -190,8 +176,6 @@ const saveDropboxHandler = async event => {
     };
   } catch (err) {
     console.log(err);
-    Sentry.captureException(err);
-    await Sentry.flush();
   }
 };
 

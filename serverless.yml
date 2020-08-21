@@ -25,7 +25,6 @@ provider:
   environment:
     DROPBOXES_TABLE: '${self:service}-${self:provider.stage}-dropboxes'
     UPLOADS_BUCKET: '${self:service}-${self:provider.stage}-uploads'
-    SENTRY_DSN: ${ssm:/education-evidence-upload-tool/SENTRY_DSN}
     URL_PREFIX: ${self:custom.endpoints.${self:provider.stage}}
     MAX_UPLOAD_BYTES: 20_971_520
     HACKNEY_TOKEN_SECRET: ${ssm:/common/hackney-jwt-secret}
@@ -63,6 +62,11 @@ custom:
     test: localhost:3000
     staging: education-evidence-staging.hackney.gov.uk
     production: education-evidence.hackney.gov.uk
+  certs:
+    dev: arn:aws:acm:x
+    test: arn:aws:acm:x
+    staging: arn:aws:acm:us-east-1:715003523189:certificate/8f7fa30c-a4e5-4775-b827-ade824a33c9a
+    production: arn:aws:acm:us-east-1:153306643385:certificate/71728a39-cd3e-4570-a440-e87f84ef9a0d
 
 plugins:
   - serverless-offline
@@ -152,7 +156,7 @@ resources:
             - ${self:custom.aliases.${self:provider.stage}}
           PriceClass: PriceClass_100
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:402949050862:certificate/a2642366-3457-42b3-bd0b-06a9350c1cd8
+            AcmCertificateArn: ${self:custom.certs.${self:provider.stage}}
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
           DefaultCacheBehavior:
