@@ -13,27 +13,19 @@ const {
 const querystring = require('querystring');
 const api = require('lambda-api')();
 
-api.get('/css/:filename', async (req, res) => {
-  res.sendFile(req.params.filename, {
-    root: 'static/css/'
-  });
-});
-
-api.get('/img/:filename', async (req, res) => {
-  res.sendFile(req.params.filename, {
-    root: 'static/img/'
-  });
-});
-
-api.get('/js/:filename', async (req, res) => {
-  res.sendFile(req.params.filename, {
-    root: 'static/js/'
-  });
-});
-
 api.use(async (req, res, next) => {
   console.log(`REQUEST: { method: ${req.method}, path: ${req.path} }`);
   next();
+});
+
+api.get('/assets/:folder/:filename', async (req, res) => {
+  res.sendFile(req.params.filename, {
+    root: `static/${req.params.folder}/`
+  });
+});
+
+api.get('/', async (req, res) => {
+  res.redirect('/dropboxes/new');
 });
 
 api.get('/login', async (req, res) => {
@@ -180,7 +172,7 @@ const saveDropboxHandler = async event => {
 };
 
 module.exports = {
-  handler: async (event, context) => {
+  appHandler: async (event, context) => {
     return await api.run(event, context);
   },
   saveDropboxHandler
