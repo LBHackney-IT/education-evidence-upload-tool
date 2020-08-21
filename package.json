@@ -1,19 +1,19 @@
 {
   "name": "education-evidence-upload-tool",
   "version": "1.0.0",
-  "description": "A simple tool to enable Hackney residents to upload evidence for education",
+  "description": "A simple tool to enable Hackney residents to upload evidence documents for education",
   "main": "index.js",
   "scripts": {
     "start": "sls offline start -s dev",
     "debug": "node --inspect ./node_modules/serverless/bin/serverless offline -s dev",
     "dynamo": "sls dynamodb start -s dev",
     "dynamo-install": "sls dynamodb install",
-    "cypress-ui": "npx cypress open --env JWT_SECRET=my_secret",
     "test-server": "sls offline start -s test",
-    "test": "cypress run",
+    "int-test-ui": "npx cypress open --env HACKNEY_TOKEN_SECRET=my_secret",
+    "int-test": "cypress run --env HACKNEY_TOKEN_SECRET=my_secret",
+    "ci": "start-server-and-test test-server http://localhost:3000/login int-test",
     "unit-test": "jest --verbose",
-    "ci": "start-server-and-test test-server http://localhost:3000/login test",
-    "deploy": "npm prune --production && sls deploy --force --aws-profile education-evidence-prod --stage production && npm i",
+    "deploy": "npm prune --production && sls deploy --force --aws-profile education-evidence --stage staging && npm i",
     "lint": "eslint --fix --ext js ./*.js && echo 'Lint complete.'"
   },
   "repository": {

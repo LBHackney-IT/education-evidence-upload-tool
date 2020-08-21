@@ -1,18 +1,21 @@
 /// <reference types="cypress" />
 
-process.env.stage = 'test';
-process.env.DROPBOXES_TABLE = 'education-evidence-upload-tool-test-dropboxes';
-process.env.UPLOADS_BUCKET = 'education-evidence-upload-tool-test-uploads';
-const dbConfig = require('../../lib/DynamoDbConfig')(process.env);
+const dbConfig = require('../../lib/DynamoDbConfig')({
+  stage: 'test',
+  dropboxesTable: 'education-evidence-upload-tool-test-dropboxes'
+});
 const dbConn = require('../../lib/DynamoDbConnection')(dbConfig);
-const s3Config = require('../../lib/s3Config')(process.env);
 const log = require('../../lib/log')();
 const dropboxes = require('../../lib/gateways/dropbox/dynamodb')({
   ...dbConn,
   log
 });
+const s3ClientConfig = require('../../lib/s3ClientConfig')({
+  bucket: 'education-evidence-upload-tool-test-uploads',
+  stage: 'test'
+});
 const documents = require('../../lib/gateways/document/s3')({
-  ...s3Config,
+  ...s3ClientConfig,
   log,
   configuration: { urlPrefix: 'http://localhost:3000' }
 });

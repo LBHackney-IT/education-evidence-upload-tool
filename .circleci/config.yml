@@ -27,23 +27,27 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run unit-test -- --ci
-      # - run:
-      #     name: Run tests
-      #     command: |
-      #       echo -e "/common/hackney-jwt-secret=my_secret\n/common/customer-jwt-secret=my_secret" >> .env
-      #       npm run ci
+      - run:
+          name: Run tests
+          command: |
+            echo -e "/common/hackney-jwt-secret=my_secret\n/common/customer-jwt-secret=my_secret" >> .env
+            npm run ci
 
   deploy:
     executor: node
     parameters:
       stage_name:
         type: string
+      AWS_ACCESS_KEY_ID:
+        type: env_var_name
+      AWS_SECRET_ACCESS_KEY:
+        type: env_var_name
     steps:
       - checkout
       - aws-cli/setup:
           aws-access-key-id: << parameters.AWS_ACCESS_KEY_ID >>
           aws-secret-access-key: << parameters.AWS_SECRET_ACCESS_KEY >>
-          aws-region: eu-west-2
+          aws-region: AWS_REGION
       - run:
           name: Install serverless
           command: sudo npm i -g serverless
@@ -65,8 +69,8 @@ workflows:
       - deploy:
           name: deploy-staging
           # context: api-assume-role-production-context
-          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_STAGING}
-          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_STAGING}
+          AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID_STAGING
+          AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY_STAGING
           stage_name: staging
           filters:
             branches:
@@ -81,7 +85,7 @@ workflows:
           name: deploy-production
           # context: api-assume-role-production-context
           stage_name: production
-          AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_PRODUCTION}
-          AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_PRODUCTION}
+          AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID_PRODUCTION
+          AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY_PRODUCTION
           requires:
             - permit-deploy-production

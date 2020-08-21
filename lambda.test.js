@@ -1,10 +1,5 @@
 jest.mock('./lib/Dependencies');
-const {
-  authorize,
-  getDropbox,
-  getSession,
-  templates,
-} = require('./lib/Dependencies');
+const { getDropbox, getSession, templates } = require('./lib/Dependencies');
 
 const evt = (method, path, body, query) => {
   let mvq = {};
@@ -22,7 +17,7 @@ const evt = (method, path, body, query) => {
     httpMethod: method,
     path,
     multiValueQueryStringParameters: mvq,
-    queryStringParameters: query,
+    queryStringParameters: query
   };
 };
 

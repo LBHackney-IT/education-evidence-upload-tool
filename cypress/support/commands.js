@@ -1,4 +1,3 @@
-
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -27,7 +26,9 @@
 
 Cypress.Commands.add('login', () => {
   const jwt = require('jsonwebtoken');
-  const token = jwt.sign({ groups: [] }, Cypress.env('JWT_SECRET'), { issuer: 'Hackney' });
+  const token = jwt.sign({ groups: [] }, 'my_secret', {
+    issuer: 'Hackney'
+  });
   cy.setCookie('hackneyToken', token, { path: '/' });
 });
 
