@@ -147,13 +147,13 @@ api.post('/dropboxes/:dropboxId/files/:fileId', async (req, res) => {
   res.sendStatus(404);
 });
 
-api.post('/dropboxes/:id/archive', async (req, res) => {
-  const response = await updateArchiveStatus({
-    dropboxId: req.params.id,
+api.post('/dropboxes/:dropboxId/archive', async (req, res) => {
+  await updateArchiveStatus({
+    dropboxId: req.params.dropboxId,
     archiveStatus: req.body.archiveStatus
   });
 
-  res.json({ response });
+  return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
 });
 
 const saveDropboxHandler = async event => {
