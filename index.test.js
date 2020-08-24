@@ -84,7 +84,7 @@ describe('handler routes', () => {
 
     it('shows the dropboxes', async () => {
       authorize.mockImplementationOnce(() => true);
-      const res = await handler(evt('GET', '/dropboxes'), {});
+      await handler(evt('GET', '/dropboxes'), {});
       expect(getDropboxes).toHaveBeenCalledWith({ submitted: true });
       expect(templates.staffDropboxListTemplate).toHaveBeenCalled();
     });
