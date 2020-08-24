@@ -103,6 +103,8 @@ functions:
       include:
         - saveDropbox.js
         - lib/**
+        - static/**
+        - templates/**
         - node_modules/**
     events:
       - http:
