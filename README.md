@@ -46,21 +46,18 @@ npm run unit-test
 
 ## Cypress tests
 
-To run the Cypress tests you'll need to set some configuration for Cypress,
-you can do this either with a `cypress.env.json` file or using environment
-variables. If you're using a JSON file it should look something like this:
-
-```
-{
-    "JWT_SECRET": "{{ value of your token secret from .env }}",
-}
-```
-
-You can run Cypress tests using this command:
+Run tests in cypress UI (for development and debugging).
+Start test server and run the tests:
 
 ```bash
-npm run int-test-ui # for dev and debugging, or
-npm run int-test # headless test run (e.g. in CI)
+npm run test-server
+npm run int-test-ui 
+```
+
+Run headless Cypress tests using this command:
+
+```bash
+npm run int-test
 ```
 
 ## Deployment
