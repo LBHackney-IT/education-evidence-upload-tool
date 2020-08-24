@@ -22,6 +22,9 @@ const documents = require('../../lib/gateways/document/s3')({
 require('cypress-file-upload');
 
 context('Customer Actions', () => {
+  after(() => {
+    cy.task('deleteDropboxes');
+  });
   const dropboxUrlRegex = /\/dropboxes\/([0-9a-zA-Z-_]{20})/;
 
   const getDropboxFromUrl = async url => {

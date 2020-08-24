@@ -15,7 +15,54 @@
 /**
  * @type {Cypress.PluginConfig}
  */
+//axe console printing
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  const { DynamoDB } = require('aws-sdk');
+  const client = new DynamoDB.DocumentClient({
+    region: 'localhost',
+    endpoint: 'http://localhost:8000',
+    accessKeyId: 'foo',
+    secretAccessKey: 'bar'
+  });
+
+  on('task', {
+    createDropbox(dropbox) {
+      return client
+        .put({
+          TableName: 'education-evidence-upload-tool-test-dropboxes',
+          Item: dropbox
+        })
+        .promise();
+    },
+    deleteDropboxes() {
+      return new Promise((resolve, reject) => {
+        client.scan(
+          {
+            TableName: 'education-evidence-upload-tool-test-dropboxes'
+          },
+          (err, data) => {
+            if (err) {
+              console.log(err);
+              return reject(err);
+            }
+
+            console.log(`Found ${data.Items.length} dropboxes`);
+
+            data.Items.forEach(dropbox => {
+              console.log(dropbox);
+              client
+                .delete({
+                  TableName: 'education-evidence-upload-tool-test-dropboxes',
+                  Key: { dropboxId: dropbox.dropboxId }
+                })
+                .promise();
+            });
+            resolve(null);
+          }
+        );
+      });
+    }
+  });
+  config.ignoreTestFiles = '**/examples/*.spec.js';
+  return config;
 };

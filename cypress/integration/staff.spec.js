@@ -1,6 +1,25 @@
 /// <reference types="cypress" />
 
 context('Staff actions', () => {
+  before(() => {
+    const dropbox = {
+      customerPhone: '123',
+      submitted: '2020-08-24T13:57:53.285Z',
+      customerNationalInsurance: 'AAB111111C',
+      created: '2020-08-24T13:57:53.285Z',
+      customerEmail: 'me@test.com',
+      customerReference: '222',
+      description: 'description',
+      customerDob: '1999-12-31',
+      customerName: 'Jim'
+    };
+    cy.task('createDropbox', { ...dropbox, dropboxId: '1' });
+    cy.task('createDropbox', { ...dropbox, dropboxId: '2' });
+    cy.task('createDropbox', { ...dropbox, dropboxId: '3' });
+  });
+  after(() => {
+    cy.task('deleteDropboxes');
+  });
   context('when not logged in', () => {
     beforeEach(() => {
       cy.logout();
