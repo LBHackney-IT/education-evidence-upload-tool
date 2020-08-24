@@ -81,10 +81,10 @@ package:
 
 functions:
   app:
-    handler: lambda.appHandler
+    handler: index.handler
     package:
       include:
-        - lambda.js
+        - index.js
         - lib/**
         - static/**
         - templates/**
@@ -98,13 +98,11 @@ functions:
           path: /{proxy+}
           method: ANY
   saveDropbox:
-    handler: lambda.saveDropboxHandler
+    handler: saveDropbox.handler
     package:
       include:
-        - lambda.js
+        - saveDropbox.js
         - lib/**
-        - static/**
-        - templates/**
         - node_modules/**
     events:
       - http:
