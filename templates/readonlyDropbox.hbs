@@ -35,7 +35,7 @@
     </strong>
     <form method="POST" action="/dropboxes/{{dropboxId}}/archive">
       <input type="hidden" name="archiveStatus" value="" />
-      <button class="btn btn-light">Unarchive</button>
+      <button class="btn btn-light" data-testid="unarchive-button-test">Unarchive</button>
     </form>
     {{else}}
     <strong>
@@ -43,7 +43,7 @@
     </strong>
     <form method="POST" action="/dropboxes/{{dropboxId}}/archive">
       <input type="hidden" name="archiveStatus" value="true" />
-      <button class="btn btn-light">Move to archive</button>
+      <button class="btn btn-light" data-testid="archive-button-test">Move to archive</button>
     </form>
     {{/if}}
 
