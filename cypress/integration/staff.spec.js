@@ -39,9 +39,8 @@ context('Staff actions', () => {
           .click();
 
         cy.get('[data-testid=dropbox-details]')
-          .should('contain', 'Benefits claim reference number:')
-          .and('contain', 'Email:')
-          .and('contain', 'Date of Birth:');
+          .and('contain', "Parent's email")
+          .and('contain', 'Date of Birth');
 
         cy.get('[data-testid=parents-email-value]').should(
           'contain',

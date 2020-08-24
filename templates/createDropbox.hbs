@@ -56,49 +56,34 @@
     Please fill in as much information as possible so we can identify you. When you are done, click "Submit Documents"
     to send the documents to us.
   </p>
-  <form action="" method="POST" onsubmit="return validateIdentification();">
+  <form action="" method="POST">
     <div class="form-group">
       <label for="firstName">Child’s First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" value="{{ dropbox.customer.firstName }}"
-        required />
+      <input type="text" class="form-control" id="firstName" name="firstName" required />
     </div>
     <div class="form-group">
       <label for="lastName">Child’s Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" value="{{ dropbox.customer.lastName }}"
-        required />
+      <input type="text" class="form-control" id="lastName" name="lastName" required />
     </div>
 
     <div class="form-group">
       <label for="dob">Date of birth</label>
-      <input type="date" class="form-control" id="dob" name="dob" value="{{ dropbox.customer.dob }}" required />
+      <input type="date" class="form-control" id="dob" name="dob" required />
     </div>
     <div class="form-group">
       <label for="parentsEmail">Parent's email</label>
-      <input type="text" class="form-control" id="parentsEmail" name="parentsEmail"
-        value="{{ dropbox.customer.parentsEmail }}" required />
+      <input type="text" class="form-control" id="parentsEmail" name="parentsEmail" required />
     </div>
 
     <div class="form-group top-border">
       <label for="description">Notes</label>
       <textarea class="form-control" id="description" name="description" rows="3"
-        placeholder='Give a reason for uploading the documents, eg. "to apply for change of circumstance"'>{{ dropbox.description }}</textarea>
+        placeholder='Give a reason for uploading the documents, eg. "to apply for change of circumstance"'></textarea>
     </div>
     <div class="form-group">
       <button type="submit" id="submitDropbox" class="btn btn-block btn-lg btn-primary">Submit Documents</button>
     </div>
   </form>
-  <script type="text/javascript">
-    function validateIdentification() {
-      if (document.querySelector('#customerDob').value !== ''
-        || document.querySelector('#customerReference').value !== ''
-        || document.querySelector('#customerNationalInsurance').value !== '') {
-        return true;
-      } else {
-        document.querySelector('#identifiable-fields-warning').classList.remove('visually-hidden')
-        return false;
-      }
-    }
-  </script>
 </section>
 {{/if }}
 {{> footer isStaff=false }}
