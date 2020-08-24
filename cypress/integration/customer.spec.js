@@ -205,6 +205,30 @@ context('Customer Actions', () => {
         });
         cy.get('#parentsEmail').type('me@test.com');
       });
+
+      it('validates the email', () => {
+        const firstName = 'Homer';
+        const lastName = 'Simpson';
+        cy.get('#firstName').type(firstName);
+        cy.get('#lastName').type(lastName);
+        cy.get('#dob').type('1999-12-31');
+        cy.get('#parentsEmail').type('me');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#parentsEmail').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#parentsEmail').type('@');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#parentsEmail').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+        cy.get('#parentsEmail').type('email.com');
+        cy.get('#submitDropbox').click();
+        cy.get('#dropboxContents').should('contain', firstName);
+      });
     });
 
     context('when a dropbox has been submitted', () => {
