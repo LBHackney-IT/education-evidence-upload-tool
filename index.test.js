@@ -33,7 +33,7 @@ const evt = (method, path, body, query) => {
 };
 
 describe('handler routes', () => {
-  const handler = require('./lambda').appHandler;
+  const handler = require('./index').handler;
 
   describe('GET /', () => {
     it('redirects to new dropbox', async () => {
