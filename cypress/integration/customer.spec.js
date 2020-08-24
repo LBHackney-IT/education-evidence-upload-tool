@@ -35,7 +35,7 @@ context('Customer Actions', () => {
 
   const uploadAFile = (fileName, description, dropboxId) => {
     cy.get('#file').attachFile(fileName);
-    cy.get('#x-amz-meta-description').type(description);
+    cy.get('[data-testid=doc-description]').select(description);
     cy.get('#uploadFile').click();
 
     // s3-local doesn't support redirects, so manually refresh instead...
@@ -98,12 +98,12 @@ context('Customer Actions', () => {
       const files = [
         {
           filename: 'foo.txt',
-          description: 'the description',
+          description: 'Council Tax letter',
           contents: 'hello'
         },
         {
           filename: 'foo2.txt',
-          description: 'the second description',
+          description: 'Proof of Address',
           contents: 'hello again'
         }
       ];
@@ -144,22 +144,13 @@ context('Customer Actions', () => {
       });
     });
 
-    it('should not allow a user to submit the upload form if they have not added a file description', () => {
-      cy.get('#file').attachFile('foo.txt');
-      cy.get('#uploadFile').click();
-
-      cy.get('#x-amz-meta-description').then($input => {
-        expect($input[0].validationMessage).not.to.be.empty;
-      });
-    });
-
     it('should not show the details form if no files have been uploaded', () => {
       cy.get('#firstName').should('not.exist');
     });
 
     context('when a file has been uploaded', () => {
       beforeEach(() => {
-        uploadAFile('foo.txt', 'this is a foo');
+        uploadAFile('foo.txt', 'Other');
       });
 
       it('should allow a user to add their details and a description and then submit the form', () => {
@@ -215,7 +206,7 @@ context('Customer Actions', () => {
 
     context('when a dropbox has been submitted', () => {
       beforeEach(() => {
-        uploadAFile('foo.txt', 'this is a foo');
+        uploadAFile('foo.txt', 'Other');
         cy.get('#firstName').type('Jonah');
         cy.get('#lastName').type('Lomu');
         cy.get('#dob').type('1999-12-31');

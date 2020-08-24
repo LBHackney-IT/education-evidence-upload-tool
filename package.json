@@ -2,7 +2,6 @@
   "name": "education-evidence-upload-tool",
   "version": "1.0.0",
   "description": "A simple tool to enable Hackney residents to upload evidence documents for education",
-  "main": "index.js",
   "scripts": {
     "start": "sls offline start -s dev",
     "debug": "node --inspect ./node_modules/serverless/bin/serverless offline -s dev",
@@ -20,7 +19,6 @@
     "type": "git",
     "url": "git+https://github.com/LBHackney-IT/education-evidence-upload-tool.git"
   },
-  "author": "Ben Pirt and Matthew Millar",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/LBHackney-IT/education-evidence-upload-tool/issues"

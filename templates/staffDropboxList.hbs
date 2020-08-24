@@ -1,30 +1,75 @@
 {{> header }}
 <h2>Customer Uploads</h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Child's Name</th>
-      <th scope="col">Docs</th>
-      <th scope="col">Date of Birth</th>
-      <th scope="col">Parent's Email</th>
-      <th scope="col">Notes</th>
 
-    </tr>
-  </thead>
-  <tbody data-testid="staff-dropboxes-list">
-    {{#each dropboxes}}
-    <tr>
-      <td scope="row">
-        <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
-          {{this.customer.firstName}} {{this.customer.lastName}}
-        </a>
-      </td>
-      <td>{{this.count}}</td>
-      <td>{{this.customer.dob}}</td>
-      <td>{{this.customer.parentsEmail}}</td>
-      <td>{{this.description}}</td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#dropboxes-to-review" data-toggle="tab" data-testid="dropboxes-to-review-test">Dropboxes
+      to review
+      ({{toReviewCount dropboxes}})</a>
+  </li>
+  <li><a href="#archived-dropboxes" data-toggle="tab">Archived dropboxes</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="dropboxes-to-review">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Child's Name</th>
+          <th scope="col">Docs</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Parent's Email</th>
+          <th scope="col">Notes</th>
+        </tr>
+      </thead>
+      <tbody data-testid="staff-dropboxes-list">
+        {{#each dropboxes}}
+        {{#unless this.archived}}
+        <tr>
+          <td scope="row">
+            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+              {{this.customer.firstName}} {{this.customer.lastName}}
+            </a>
+          </td>
+          <td>{{this.count}}</td>
+          <td>{{this.customer.dob}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
+        </tr>
+        {{/unless}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane" id="archived-dropboxes">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Child's Name</th>
+          <th scope="col">Docs</th>
+          <th scope="col">Date of Birth</th>
+          <th scope="col">Parent's Email</th>
+          <th scope="col">Notes</th>
+        </tr>
+      </thead>
+      <tbody data-testid="staff-dropboxes-list">
+        {{#each dropboxes}}
+        {{#if this.archived}}
+        <tr>
+          <td scope="row">
+            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+              {{this.customer.firstName}} {{this.customer.lastName}}
+            </a>
+          </td>
+          <td>{{this.count}}</td>
+          <td>{{this.customer.dob}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
+        </tr>
+        {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
 {{> footer isStaff=true }}

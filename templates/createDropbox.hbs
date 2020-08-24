@@ -30,6 +30,8 @@
     </li>
     {{/each}}
   </ul>
+  <hr>
+  <h3>Add another document:</h3>
   {{/if }}
   <form action="{{ secureUploadUrl }}" method="POST" enctype="multipart/form-data">
     <div class="form-group">
@@ -38,9 +40,16 @@
       {{/each}}
       <input type="hidden" name="key" value="{{dropboxId}}/{{secureDocumentId}}/${filename}" />
       <input type="hidden" name="X-Amz-Server-Side-Encryption" value="AES256" />
-      <label for="x-amz-meta-description">File description</label>
-      <input type="text" class="form-control" id="x-amz-meta-description" name="x-amz-meta-description"
-        placeholder='Explain what the document is, eg. "passport scan"' required />
+      <div class="form-group">
+        <label for="x-amz-meta-description">What is this document?</label>
+        <select class="form-control" id="x-amz-meta-description" name="x-amz-meta-description"
+          data-testid="doc-description">
+          <option>Council Tax letter</option>
+          <option>Proof of Address</option>
+          <option>Proof of Birth</option>
+          <option>Other</option>
+        </select>
+      </div>
       <label for="file">Select file</label>
       <input type="file" class="form-control" id="file" name="file" required />
     </div>
