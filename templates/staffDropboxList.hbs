@@ -6,7 +6,7 @@
       to review
       ({{toReviewCount dropboxes}})</a>
   </li>
-  <li><a href="#archived-dropboxes" data-toggle="tab">Archived dropboxes</a></li>
+  <li><a href="#archived-dropboxes" data-toggle="tab" data-testid="archived-dropboxes">Archived dropboxes</a></li>
 </ul>
 
 <div class="tab-content">
@@ -68,7 +68,7 @@
         {{#if this.archived}}
         <tr>
           <td scope="row">
-            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+            <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
               {{this.customer.name}}
             </a>
           </td>

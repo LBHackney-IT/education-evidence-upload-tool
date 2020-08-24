@@ -99,6 +99,36 @@ context('Staff actions', () => {
           '(2)'
         );
       });
+
+      it('can unarchive a dropbox', () => {
+        cy.get('[data-testid=dropboxes-to-review-test]').should(
+          'contain',
+          '(2)'
+        );
+
+        cy.get('[data-testid=archived-dropboxes]').click();
+
+        cy.get('[data-testid=archived-dropbox-link]').click();
+
+        cy.get('[data-testid=archive-status-test]').should(
+          'contain',
+          'Status: Archived'
+        );
+
+        cy.get('[data-testid=unarchive-button-test]').click();
+
+        cy.get('[data-testid=archive-status-test]').should(
+          'contain',
+          'Status: To review'
+        );
+
+        cy.get('[data-testid=dropbox-list-return-link]').click();
+
+        cy.get('[data-testid=dropboxes-to-review-test]').should(
+          'contain',
+          '(3)'
+        );
+      });
     });
   });
 });
