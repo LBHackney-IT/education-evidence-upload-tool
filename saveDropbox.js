@@ -8,14 +8,12 @@ module.exports = {
         event.body = Buffer.from(event.body, 'base64').toString();
       }
 
+      const { dropboxId } = event.pathParameters;
       const session = getSession(event.headers);
-      const { dropboxId: pathDropboxId } = event.pathParameters;
-
-      if (!session || session.dropboxId !== pathDropboxId) {
-        return { statusCode: 404 };
+      if (!session || session.dropboxId !== dropboxId) {
+        return { statusCode: 403 };
       }
 
-      const { dropboxId } = session;
       await saveDropbox(dropboxId, querystring.parse(event.body));
 
       return {
