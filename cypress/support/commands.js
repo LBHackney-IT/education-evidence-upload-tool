@@ -26,7 +26,7 @@
 
 Cypress.Commands.add('login', () => {
   const jwt = require('jsonwebtoken');
-  const token = jwt.sign({ groups: [] }, 'my_secret', {
+  const token = jwt.sign({ groups: ['test-group'] }, 'my_secret', {
     issuer: 'Hackney'
   });
   cy.setCookie('hackneyToken', token, { path: '/' });
