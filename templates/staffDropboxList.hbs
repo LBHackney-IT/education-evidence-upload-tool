@@ -1,6 +1,5 @@
-{{> header }}
+{{> header isProd }}
 <h2>Customer Uploads</h2>
-
 <ul class="nav nav-tabs">
   <li class="active"><a href="#dropboxes-to-review" data-toggle="tab" data-testid="dropboxes-to-review-test">Dropboxes
       to review
@@ -8,7 +7,6 @@
   </li>
   <li><a href="#archived-dropboxes" data-toggle="tab" data-testid="archived-dropboxes">Archived dropboxes</a></li>
 </ul>
-
 <div class="tab-content">
   <div class="tab-pane active" id="dropboxes-to-review">
     <table class="table table-striped">
@@ -27,23 +25,23 @@
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-        {{#unless this.archived}}
-        <tr>
-          <td scope="row">
-            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.name}}
-            </a>
-          </td>
-          <td>{{this.count}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.customer.email}}</td>
-          <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.nationalInsurance}}</td>
-          <td>{{this.customer.phone}}</td>
-          <td>{{this.customer.reference}}</td>
-          <td>{{dateFormat this.submitted}}</td>
-        </tr>
-        {{/unless}}
+          {{#unless this.archived}}
+            <tr>
+              <td scope="row">
+                <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+                  {{this.customer.name}}
+                </a>
+              </td>
+              <td>{{this.count}}</td>
+              <td>{{this.description}}</td>
+              <td>{{this.customer.email}}</td>
+              <td>{{this.customer.dob}}</td>
+              <td>{{this.customer.nationalInsurance}}</td>
+              <td>{{this.customer.phone}}</td>
+              <td>{{this.customer.reference}}</td>
+              <td>{{dateFormat this.submitted}}</td>
+            </tr>
+          {{/unless}}
         {{/each}}
       </tbody>
     </table>
@@ -65,23 +63,23 @@
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-        {{#if this.archived}}
-        <tr>
-          <td scope="row">
-            <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.name}}
-            </a>
-          </td>
-          <td>{{this.count}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.customer.email}}</td>
-          <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.nationalInsurance}}</td>
-          <td>{{this.customer.phone}}</td>
-          <td>{{this.customer.reference}}</td>
-          <td>{{dateFormat this.submitted}}</td>
-        </tr>
-        {{/if}}
+          {{#if this.archived}}
+            <tr>
+              <td scope="row">
+                <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
+                  {{this.customer.name}}
+                </a>
+              </td>
+              <td>{{this.count}}</td>
+              <td>{{this.description}}</td>
+              <td>{{this.customer.email}}</td>
+              <td>{{this.customer.dob}}</td>
+              <td>{{this.customer.nationalInsurance}}</td>
+              <td>{{this.customer.phone}}</td>
+              <td>{{this.customer.reference}}</td>
+              <td>{{dateFormat this.submitted}}</td>
+            </tr>
+          {{/if}}
         {{/each}}
       </tbody>
     </table>

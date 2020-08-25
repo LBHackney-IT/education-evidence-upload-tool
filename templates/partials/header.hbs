@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138887970-4"></script>
-  <script type="text/javascript" src="/assets/js/ga.js"></script>
+  {{#if isProd }}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138887970-4"></script>
+    <script type="text/javascript" src="/assets/js/ga.js"></script>
+    <script type="text/javascript" src="/assets/js/hotjar.js"></script>
+  {{/if }}
   <title>Hackney Education Uploads</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +15,8 @@
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/assets/css/bootstrap-nav.min.css" />
   <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/png" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="/assets/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/js/bootstrap.min.js"></script>
 </head>
 
 <body>
