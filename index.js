@@ -38,7 +38,10 @@ api.get('/', async (req, res) => {
 });
 
 api.get('/login', redirectToDropboxesIfAuth, async (req, res) => {
-  const html = templates.loginTemplate();
+  const html = templates.loginTemplate({
+    isProd: process.env.stage === 'production',
+    redirectUrl: process.env.URL_PREFIX
+  });
   res.html(html);
 });
 
@@ -56,7 +59,10 @@ api.get('/restart', async (req, res) => {
 
 api.get('/dropboxes', redirectToLoginIfNoAuth, async (req, res) => {
   const dropboxes = await getDropboxes({ submitted: true });
-  const html = templates.staffDropboxListTemplate({ dropboxes });
+  const html = templates.staffDropboxListTemplate({
+    dropboxes,
+    isProd: process.env.stage === 'production'
+  });
   res.html(html);
 });
 
@@ -89,7 +95,13 @@ api.get('/dropboxes/:dropboxId', async (req, res) => {
   }
 
   if (dropbox.submitted) {
-    return res.html(templates.readonlyDropboxTemplate({ dropbox, dropboxId }));
+    return res.html(
+      templates.readonlyDropboxTemplate({
+        dropbox,
+        dropboxId,
+        isProd: process.env.stage === 'production'
+      })
+    );
   }
 
   const { url, fields, documentId } = await getSecureUploadUrl(dropboxId);
@@ -98,6 +110,7 @@ api.get('/dropboxes/:dropboxId', async (req, res) => {
     templates.createDropboxTemplate({
       dropbox,
       dropboxId,
+      isProd: process.env.stage === 'production',
       secureDocumentId: documentId,
       secureUploadUrl: url,
       secureUploadFields: fields
@@ -113,6 +126,7 @@ api.get(
     const html = templates.readonlyDropboxTemplate({
       dropbox,
       dropboxId: req.params.dropboxId,
+      isProd: process.env.stage === 'production',
       isStaff: true
     });
     res.html(html);
