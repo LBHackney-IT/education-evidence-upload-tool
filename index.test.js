@@ -183,6 +183,7 @@ describe('handler routes', () => {
       expect(templates.readonlyDropboxTemplate).toHaveBeenCalledWith({
         dropbox,
         dropboxId: '1',
+        isProd: false,
         isStaff: true
       });
     });
