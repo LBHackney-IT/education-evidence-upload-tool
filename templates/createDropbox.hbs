@@ -63,12 +63,14 @@
   <h2>2. Add your child's details:</h2>
   <form action="" method="POST">
     <div class="form-group">
-      <label for="firstName">Child’s First Name</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" required />
+      <label for="firstName">Child’s first name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" pattern=".*\S+.*"
+        title="First name must contain at least one letter" required />
     </div>
     <div class="form-group">
-      <label for="lastName">Child’s Last Name</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" required />
+      <label for="lastName">Child’s last name</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" pattern=".*\S+.*"
+        title="Last name must contain at least one letter" required />
     </div>
 
     <div class="form-group">
@@ -82,8 +84,7 @@
 
     <div class="form-group top-border">
       <label for="description">Notes</label>
-      <textarea class="form-control" id="description" name="description" rows="3"
-        placeholder='Give a reason for uploading the documents, eg. "to apply for change of circumstance"'></textarea>
+      <textarea class="form-control" id="description" name="description" rows="3"></textarea>
     </div>
     <div class="form-group">
       <button type="submit" id="submitDropbox" class="btn btn-block btn-lg btn-primary">Submit Documents</button>

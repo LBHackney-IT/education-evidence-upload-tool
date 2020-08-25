@@ -229,6 +229,23 @@ context('Customer Actions', () => {
         cy.get('#submitDropbox').click();
         cy.get('#dropboxContents').should('contain', firstName);
       });
+
+      it('validates the name', () => {
+        cy.get('#firstName').type(' ');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#firstName').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#firstName').type('Tim');
+        cy.get('#lastName').type(' ');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#lastName').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+      });
     });
 
     context('when a dropbox has been submitted', () => {
