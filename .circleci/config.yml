@@ -28,9 +28,9 @@ jobs:
           name: Run unit tests
           command: npm run unit-test -- --ci
       - run:
-          name: Run tests
+          name: Run integration tests
           command: |
-            echo -e "/common/hackney-jwt-secret=my_secret\n/common/customer-jwt-secret=my_secret" >> .env
+            echo -e "/common/hackney-jwt-secret=my_secret\n/common/customer-jwt-secret=my_secret\n/education-evidence/gov-notify-api-key=api-key\n/education-evidence/gov-notify-confirmation-template-id=template-id\n/education-evidence/feedback-form-url=http://feedback-form" >> .env
             npm run ci
 
   deploy:

@@ -39,6 +39,7 @@ api.get('/', async (req, res) => {
 
 api.get('/login', redirectToDropboxesIfAuth, async (req, res) => {
   const html = templates.loginTemplate({
+    feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
     isProd: process.env.stage === 'production',
     redirectUrl: process.env.URL_PREFIX
   });
@@ -61,6 +62,7 @@ api.get('/dropboxes', redirectToLoginIfNoAuth, async (req, res) => {
   const dropboxes = await getDropboxes({ submitted: true });
   const html = templates.staffDropboxListTemplate({
     dropboxes,
+    feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
     isProd: process.env.stage === 'production'
   });
   res.html(html);
@@ -99,6 +101,7 @@ api.get('/dropboxes/:dropboxId', async (req, res) => {
       templates.readonlyDropboxTemplate({
         dropbox,
         dropboxId,
+        feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
         isProd: process.env.stage === 'production'
       })
     );
@@ -110,6 +113,7 @@ api.get('/dropboxes/:dropboxId', async (req, res) => {
     templates.createDropboxTemplate({
       dropbox,
       dropboxId,
+      feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
       isProd: process.env.stage === 'production',
       secureDocumentId: documentId,
       secureUploadUrl: url,
@@ -126,6 +130,7 @@ api.get(
     const html = templates.readonlyDropboxTemplate({
       dropbox,
       dropboxId: req.params.dropboxId,
+      feedbackFormUrl: process.env.FEEDBACK_FORM_URL,
       isProd: process.env.stage === 'production',
       isStaff: true
     });

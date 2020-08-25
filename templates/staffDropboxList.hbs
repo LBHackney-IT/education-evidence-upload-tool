@@ -1,4 +1,4 @@
-{{> header isProd }}
+{{> header isProd=isProd feedbackFormUrl=feedbackFormUrl }}
 <h2>Customer Uploads</h2>
 <ul class="nav nav-tabs">
   <li class="active"><a href="#dropboxes-to-review" data-toggle="tab" data-testid="dropboxes-to-review-test">Dropboxes
@@ -20,18 +20,18 @@
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-        {{#unless this.archived}}
-        <tr>
-          <td scope="row">
-            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.firstName}} {{this.customer.lastName}}
-            </a>
-          </td>
-          <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.parentsEmail}}</td>
-          <td>{{this.description}}</td>
-        </tr>
-        {{/unless}}
+          {{#unless this.archived}}
+            <tr>
+              <td scope="row">
+                <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+                  {{this.customer.firstName}} {{this.customer.lastName}}
+                </a>
+              </td>
+              <td>{{this.customer.dob}}</td>
+              <td>{{this.customer.parentsEmail}}</td>
+              <td>{{this.description}}</td>
+            </tr>
+          {{/unless}}
         {{/each}}
       </tbody>
     </table>
@@ -48,18 +48,18 @@
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-        {{#if this.archived}}
-        <tr>
-          <td scope="row">
-            <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.firstName}} {{this.customer.lastName}}
-            </a>
-          </td>
-          <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.parentsEmail}}</td>
-          <td>{{this.description}}</td>
-        </tr>
-        {{/if}}
+          {{#if this.archived}}
+            <tr>
+              <td scope="row">
+                <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
+                  {{this.customer.firstName}} {{this.customer.lastName}}
+                </a>
+              </td>
+              <td>{{this.customer.dob}}</td>
+              <td>{{this.customer.parentsEmail}}</td>
+              <td>{{this.description}}</td>
+            </tr>
+          {{/if}}
         {{/each}}
       </tbody>
     </table>

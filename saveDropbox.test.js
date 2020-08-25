@@ -1,5 +1,10 @@
+process.env.GOV_NOTIFY_API_KEY = 'key';
 jest.mock('./lib/Dependencies');
-const { getSession, saveDropbox } = require('./lib/Dependencies');
+const {
+  getSession,
+  saveDropbox,
+  sendConfirmationEmail
+} = require('./lib/Dependencies');
 
 describe('save dropbox handler', () => {
   const handler = require('./saveDropbox').handler;
@@ -40,5 +45,15 @@ describe('save dropbox handler', () => {
     expect(saveDropbox).toHaveBeenCalled();
     expect(res.statusCode).toBe(302);
     expect(res.headers.Location).toBe('/dropboxes/1');
+  });
+
+  it('sends a confirmation email', async () => {
+    getSession.mockImplementationOnce(() => ({ dropboxId: '1' }));
+    const event = {
+      isBase64Encoded: false,
+      pathParameters: { dropboxId: '1' }
+    };
+    await handler(event);
+    expect(sendConfirmationEmail).toHaveBeenCalledWith('1');
   });
 });
