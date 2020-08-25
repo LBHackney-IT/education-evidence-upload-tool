@@ -33,7 +33,6 @@ provider:
     ALLOWED_GROUPS: ${self:custom.allowedGroups.${self:provider.stage}}
     GOV_NOTIFY_API_KEY: ${ssm:/education-evidence/gov-notify-api-key}
     GOV_NOTIFY_CONFIRMATION_TEMPLATE_ID: ${ssm:/education-evidence/gov-notify-confirmation-template-id}
-    GOV_NOTIFY_REPLY_TO_ID: ${ssm:/education-evidence/gov-notify-reply-to-id}
     FEEDBACK_FORM_URL: ${ssm:/education-evidence/feedback-form-url}
 
 custom:
