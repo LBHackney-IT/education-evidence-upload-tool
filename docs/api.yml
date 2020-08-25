@@ -1,0 +1,286 @@
+openapi: 3.0.0
+info:
+  description: Allows residents to securely upload evidence to support their in-year application
+  version: '1.0.0'
+  title: education-evidence-upload-tool
+
+paths:
+  /:
+    get:
+      operationId: root-path
+      summary: Redirects the user to a new dropbox
+      description: User is redirected to a new dropbox (/dropboxes/new)
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirect to the /dropboxes/new page
+
+  /dropboxes:
+    get:
+      operationId: get-dropboxes
+      summary: Gets the list of all dropboxes
+      description: When logged in it shows the list of all dropboxes and when logged out the user is redirected to the login page (/login)
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: List of dropboxes
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirect to the login page (/login)
+
+  /dropboxes/new:
+    get:
+      operationId: new-dropbox
+      summary: Creates a new dropbox
+      description: If logged in the user is redirected to the list of dropboxes (/dropboxes) and if logged out the user is redirected to a new dropbox (/dropboxes/:dropboxId)
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to list of dropboxes (/dropboxes) or creates a new dropbox and redirects to it (/dropboxes/:dropboxId) if logged out
+
+  /dropboxes/{dropboxId}:
+    get:
+      operationId: get-dropbox-for-id
+      summary: Gets a dropbox with the specified id
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Shows a form where the user can upload documents
+
+  /dropboxes/{dropboxId}/view:
+    get:
+      operationId: view-dropbox-with-id
+      summary: Allows logged in user to see the content of a dropbox and redirects a logged out user to the log in page (/login)
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Shows the content of the dropbox
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to the log in page if not logged in (/login)
+
+  /dropboxes/{dropboxId}/files/{fileId}:
+    get:
+      operationId: get-file
+      summary: Redirects to the download url for the specified file ID
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+        - $ref: '#/components/parameters/fileId'
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to the download url for the specified file ID and redirects an unauthorized user to dropboxes/new
+        '404':
+          description: File does not exist
+    post:
+      operationId: delete-file
+      summary: Deletes the file with id if method in the request body is delete
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+        - $ref: '#/components/parameters/fileId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/method'
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Deletes the file and redirects to specified dropbox or redirects to /dropboxes/new if the session dropbox id doesn't match the provided dropbox id
+
+  /dropboxes/:dropboxId/archive:
+    post:
+      operationId: archive-dropbox
+      summary: Allows the user to archive a dropbox
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/archiveStatus'
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to the dropbox view page if the user is logged in and redirects to the log in page (/login) if the user is logged out
+
+  /login:
+    get:
+      operationId: user-login
+      summary: Allows the user to log in
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Shows the log in page
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects the user to dropboxes (/dropboxes) if already logged in
+
+  /logout:
+    get:
+      operationId: user-logout
+      summary: Allows the user to log out
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to the login page (/login)
+
+  /restart:
+    get:
+      operationId: restart-new-dropbox
+      summary: Allows user to access a new dropbox by redirecting to /dropboxes/new
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Redirects to a new dropbox page (/dropboxes/new)
+
+  /assets/{folder}/{filename}:
+    get:
+      operationId: map-file
+      summary: It maps the folder/filename in the request to a folder/filename in static folder
+      parameters:
+        - $ref: '#/components/parameters/folder'
+        - $ref: '#/components/parameters/filename'
+      responses:
+        '500':
+          description: No such file
+        '404':
+          description: Route not found
+        '200':
+          description: OK. Returns the mapped file with the file type based on the file extension.
+
+components:
+  parameters:
+    dropboxId:
+      name: dropboxId
+      in: path
+      required: true
+      description: The id of the dropbox
+      schema:
+        type: string
+    fileId:
+      name: fileId
+      in: path
+      description: ID of the file
+      required: true
+      schema:
+        type: string
+    folder:
+      name: folder
+      in: path
+      description: folder name
+      required: true
+      schema:
+        type: string
+    filename:
+      name: filename
+      in: path
+      description: file name
+      required: true
+      schema:
+        type: string
+  schemas:
+    method:
+      type: object
+      description: Request method
+      properties:
+        _method:
+          type: string
+          description: A request method
+          example: 'DELETE'
+    archiveStatus:
+      type: object
+      description: Archived status object
+      properties:
+        archivedStatus:
+          type: boolean
+          description: Value of the dropbox archived status
+          example: true
