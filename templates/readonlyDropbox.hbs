@@ -15,18 +15,18 @@
     <strong>Uploaded Documents:</strong>
     <ol>
       {{#each dropbox.uploads }}
-        <li>
-          <a href="/dropboxes/{{../dropboxId}}/files/{{this.id}}" target="_blank">{{this.filename}}</a>
-          {{#if this.description }} - {{this.description}}{{/if }}
-        </li>
+      <li>
+        <a href="/dropboxes/{{../dropboxId}}/files/{{this.id}}" target="_blank">{{this.filename}}</a>
+        {{#if this.description }} - {{this.description}}{{/if }}
+      </li>
       {{/each}}
     </ol>
-  {{/if }}
-</div>
-<strong>Submitted on:</strong>
-<p>{{dateFormat dropbox.submitted}}</p>
-{{#if isStaff }}
-  {{#if dropbox.archived}}
+    {{/if }}
+    </div>
+    <strong>Submitted on:</strong>
+    <p>{{dateFormat dropbox.submitted}}</p>
+    {{#if isStaff }}
+    {{#if dropbox.archived}}
     <strong>
       <p data-testid="archive-status-test">Status: Archived </p>
     </strong>
@@ -34,7 +34,7 @@
       <input type="hidden" name="archiveStatus" value="" />
       <button class="btn btn-light" data-testid="unarchive-button-test">Unarchive</button>
     </form>
-  {{else}}
+    {{else}}
     <strong>
       <p data-testid="archive-status-test">Status: To review</p>
     </strong>
@@ -42,8 +42,8 @@
       <input type="hidden" name="archiveStatus" value="true" />
       <button class="btn btn-light" data-testid="archive-button-test">Move to archive</button>
     </form>
-  {{/if}}
-{{else}}
-  <a href="/restart" class="btn btn-block btn-lg btn-primary" role="button" id="startAgain">Start Again</a>
-{{/if }}
-{{> footer isStaff }}
+    {{/if}}
+    {{else}}
+    <a href="/restart" class="btn btn-block btn-lg btn-primary" role="button" id="startAgain">Start Again</a>
+    {{/if }}
+    {{> footer isStaff }}
