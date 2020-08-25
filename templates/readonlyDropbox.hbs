@@ -1,21 +1,16 @@
 {{> header isProd }}
 {{#if isStaff }}
-  <a href="/dropboxes" data-testid="dropbox-list-return-link">
-    << Back to all dropboxes</a> {{/if }}
-<div id="dropboxContents" data-testid="dropbox-details">
-  <strong>Name:</strong>
-  <p>{{ dropbox.customer.name }}</p>
-  <strong>Email:</strong>
-  <p data-testid="email-value">{{ dropbox.customer.email }}</p>
-  <strong>Date of Birth:</strong>
-  <p data-testid="dob-value">{{ dropbox.customer.dob }}</p>
-  <strong>Benefits claim reference number:</strong>
-  <p data-testid="reference-number-value">{{ dropbox.customer.reference }}</p>
-  <strong>National Insurance number:</strong>
-  <p data-testid="national-insurance-value">{{ dropbox.customer.nationalInsurance }}</p>
-  <strong>Description:</strong>
-  <p>{{ dropbox.description }}</p>
-  {{#if dropbox.hasUploads }}
+<a href="/dropboxes" data-testid="dropbox-list-return-link">
+  << Back to all dropboxes</a> {{/if }} <div id="dropboxContents" data-testid="dropbox-details">
+    <strong>Child's name:</strong>
+    <p>{{ dropbox.customer.firstName }} {{ dropbox.customer.lastName }}</p>
+    <strong>Date of birth:</strong>
+    <p data-testid="dob-value">{{ dropbox.customer.dob }}</p>
+    <strong>Parent's email:</strong>
+    <p data-testid="parents-email-value">{{ dropbox.customer.parentsEmail }}</p>
+    <strong>Notes:</strong>
+    <p>{{ dropbox.description }}</p>
+    {{#if dropbox.hasUploads }}
     <strong>Uploaded Documents:</strong>
     <ol>
       {{#each dropbox.uploads }}
