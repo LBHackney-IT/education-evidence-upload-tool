@@ -23,14 +23,18 @@ provider:
         - s3:ListBucket
       Resource: '*'
   environment:
+    stage: ${self:provider.stage}
+    URL_PREFIX: ${self:custom.endpoints.${self:provider.stage}}
     DROPBOXES_TABLE: '${self:service}-${self:provider.stage}-dropboxes'
     UPLOADS_BUCKET: '${self:service}-${self:provider.stage}-uploads'
-    URL_PREFIX: ${self:custom.endpoints.${self:provider.stage}}
     MAX_UPLOAD_BYTES: 20_971_520
     HACKNEY_TOKEN_SECRET: ${ssm:/common/hackney-jwt-secret}
     CUSTOMER_TOKEN_SECRET: ${ssm:/common/customer-jwt-secret~true}
-    stage: ${self:provider.stage}
     ALLOWED_GROUPS: ${self:custom.allowedGroups.${self:provider.stage}}
+    GOV_NOTIFY_API_KEY: ${ssm:/education-evidence/gov-notify-api-key}
+    GOV_NOTIFY_CONFIRMATION_TEMPLATE_ID: ${ssm:/education-evidence/gov-notify-confirmation-template-id}
+    GOV_NOTIFY_REPLY_TO_ID: ${ssm:/education-evidence/gov-notify-reply-to-id}
+    FEEDBACK_FORM_URL: ${ssm:/education-evidence/feedback-form-url}
 
 custom:
   dynamodb:

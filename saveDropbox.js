@@ -1,5 +1,9 @@
 const querystring = require('querystring');
-const { getSession, saveDropbox } = require('./lib/Dependencies');
+const {
+  getSession,
+  saveDropbox,
+  sendConfirmationEmail
+} = require('./lib/Dependencies');
 
 module.exports = {
   handler: async event => {
@@ -15,6 +19,8 @@ module.exports = {
       }
 
       await saveDropbox(dropboxId, querystring.parse(event.body));
+
+      await sendConfirmationEmail(dropboxId);
 
       return {
         statusCode: 302,
