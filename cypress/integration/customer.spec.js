@@ -148,7 +148,7 @@ context('Customer Actions', () => {
     });
 
     it('should not show the details form if no files have been uploaded', () => {
-      cy.get('#customerName').should('not.exist');
+      cy.get('#firstName').should('not.exist');
     });
 
     context('when a file has been uploaded', () => {
@@ -157,37 +157,92 @@ context('Customer Actions', () => {
       });
 
       it('should allow a user to add their details and a description and then submit the form', () => {
-        const name = 'Homer Simpson';
+        const firstName = 'Homer';
+        const lastName = 'Simpson';
         const description = 'These are for my application';
 
-        cy.get('#customerName').type(name);
-        cy.get('#customerDob').type('1999-12-31');
-        cy.get('#customerEmail').type('me@test.com');
-        cy.get('#customerPhone').type('123');
-        cy.get('#customerReference').type('222');
-        cy.get('#customerNationalInsurance').type('AB111111C');
+        cy.get('#firstName').type(firstName);
+        cy.get('#lastName').type(lastName);
+        cy.get('#dob').type('1999-12-31');
+        cy.get('#parentsEmail').type('me@test.com');
         cy.get('#description').type(description);
         cy.get('#submitDropbox').click();
 
         cy.get('#dropboxContents')
-          .should('contain', name)
+          .should('contain', firstName)
+          .should('contain', lastName)
           .should('contain', description);
       });
 
-      it('should not allow a user to submit the form if they have not entered their name', () => {
+      it('should not allow a user to submit the form if they have not entered required fields', () => {
+        const firstName = 'Homer';
+        const lastName = 'Simpson';
         cy.get('#submitDropbox').click();
 
-        cy.get('#customerName').then($input => {
+        cy.get('#firstName').then($input => {
           expect($input[0].validationMessage).not.to.be.empty;
         });
-      });
-
-      it('should not allow a user to submit the form if they have not entered a reason for uploading', () => {
-        cy.get('#customerName').type('Lisa Simpson');
+        cy.get('#firstName').type(firstName);
 
         cy.get('#submitDropbox').click();
 
-        cy.get('#description').then($input => {
+        cy.get('#lastName').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#lastName').type(lastName);
+        cy.get('#submitDropbox').click();
+
+        cy.get('#dob').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#dob').type('1999-12-31');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#parentsEmail').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+        cy.get('#parentsEmail').type('me@test.com');
+      });
+
+      it('validates the email', () => {
+        const firstName = 'Homer';
+        const lastName = 'Simpson';
+        cy.get('#firstName').type(firstName);
+        cy.get('#lastName').type(lastName);
+        cy.get('#dob').type('1999-12-31');
+        cy.get('#parentsEmail').type('me');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#parentsEmail').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#parentsEmail').type('@');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#parentsEmail').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+        cy.get('#parentsEmail').type('email.com');
+        cy.get('#submitDropbox').click();
+        cy.get('#dropboxContents').should('contain', firstName);
+      });
+
+      it('validates the name', () => {
+        cy.get('#firstName').type(' ');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#firstName').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+
+        cy.get('#firstName').type('Tim');
+        cy.get('#lastName').type(' ');
+        cy.get('#submitDropbox').click();
+
+        cy.get('#lastName').then($input => {
           expect($input[0].validationMessage).not.to.be.empty;
         });
       });
@@ -196,11 +251,11 @@ context('Customer Actions', () => {
     context('when a dropbox has been submitted', () => {
       beforeEach(() => {
         uploadAFile('foo.txt', 'Other');
-        cy.get('#customerName').type('Jonah Lomu');
-        cy.get('#customerEmail').type('me@test.com');
-        cy.get('#customerPhone').type('123');
+        cy.get('#firstName').type('Jonah');
+        cy.get('#lastName').type('Lomu');
+        cy.get('#dob').type('1999-12-31');
+        cy.get('#parentsEmail').type('me@test.com');
         cy.get('#description').type('These are for my wedding');
-        cy.get('#customerNationalInsurance').type('AB111111C');
         cy.get('#submitDropbox').click();
       });
 

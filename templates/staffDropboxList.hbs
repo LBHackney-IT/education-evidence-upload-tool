@@ -1,6 +1,5 @@
-{{> header }}
+{{> header isProd }}
 <h2>Customer Uploads</h2>
-
 <ul class="nav nav-tabs">
   <li class="active"><a href="#dropboxes-to-review" data-toggle="tab" data-testid="dropboxes-to-review-test">Dropboxes
       to review
@@ -8,21 +7,15 @@
   </li>
   <li><a href="#archived-dropboxes" data-toggle="tab" data-testid="archived-dropboxes">Archived dropboxes</a></li>
 </ul>
-
 <div class="tab-content">
   <div class="tab-pane active" id="dropboxes-to-review">
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Docs</th>
-          <th scope="col">Upload Reason</th>
-          <th scope="col">Email</th>
-          <th scope="col">Date of Birth</th>
-          <th scope="col">National Insurance Number</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Reference</th>
-          <th scope="col">Submitted</th>
+          <th scope="col">Child's name</th>
+          <th scope="col">Date of birth</th>
+          <th scope="col">Parent's email</th>
+          <th scope="col">Notes</th>
         </tr>
       </thead>
       <tbody data-testid="staff-dropboxes-list">
@@ -31,17 +24,12 @@
         <tr>
           <td scope="row">
             <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.name}}
+              {{this.customer.firstName}} {{this.customer.lastName}}
             </a>
           </td>
-          <td>{{this.count}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.customer.email}}</td>
           <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.nationalInsurance}}</td>
-          <td>{{this.customer.phone}}</td>
-          <td>{{this.customer.reference}}</td>
-          <td>{{dateFormat this.submitted}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
         </tr>
         {{/unless}}
         {{/each}}
@@ -52,15 +40,10 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Docs</th>
-          <th scope="col">Upload Reason</th>
-          <th scope="col">Email</th>
-          <th scope="col">Date of Birth</th>
-          <th scope="col">National Insurance Number</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Reference</th>
-          <th scope="col">Submitted</th>
+          <th scope="col">Child's name</th>
+          <th scope="col">Date of birth</th>
+          <th scope="col">Parent's email</th>
+          <th scope="col">Notes</th>
         </tr>
       </thead>
       <tbody data-testid="staff-dropboxes-list">
@@ -69,17 +52,12 @@
         <tr>
           <td scope="row">
             <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
-              {{this.customer.name}}
+              {{this.customer.firstName}} {{this.customer.lastName}}
             </a>
           </td>
-          <td>{{this.count}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.customer.email}}</td>
           <td>{{this.customer.dob}}</td>
-          <td>{{this.customer.nationalInsurance}}</td>
-          <td>{{this.customer.phone}}</td>
-          <td>{{this.customer.reference}}</td>
-          <td>{{dateFormat this.submitted}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
         </tr>
         {{/if}}
         {{/each}}

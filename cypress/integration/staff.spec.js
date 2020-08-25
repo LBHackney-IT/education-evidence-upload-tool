@@ -3,16 +3,15 @@
 context('Staff actions', () => {
   before(() => {
     const dropbox = {
-      customerPhone: '123',
-      submitted: '2020-08-24T13:57:53.285Z',
-      customerNationalInsurance: 'AAB111111C',
-      created: '2020-08-24T13:57:53.285Z',
-      customerEmail: 'me@test.com',
-      customerReference: '222',
-      description: 'description',
-      customerDob: '1999-12-31',
-      customerName: 'Jim'
+      firstName: 'Homer',
+      lastName: 'Simpson',
+      submitted: '2020-08-24T15:06:49.087Z',
+      created: '2020-08-24T15:06:46.975Z',
+      dob: '1999-12-31',
+      parentsEmail: 'me@test.com',
+      description: 'These are for my application'
     };
+
     cy.task('createDropbox', { ...dropbox, dropboxId: '1' });
     cy.task('createDropbox', { ...dropbox, dropboxId: '2' });
     cy.task('createDropbox', { ...dropbox, dropboxId: '3' });
@@ -58,18 +57,14 @@ context('Staff actions', () => {
           .click();
 
         cy.get('[data-testid=dropbox-details]')
-          .should('contain', 'Benefits claim reference number:')
-          .and('contain', 'Email:')
-          .and('contain', 'Date of Birth:')
-          .and('contain', 'National Insurance number:');
+          .and('contain', "Parent's email")
+          .and('contain', 'Date of birth');
 
-        cy.get('[data-testid=reference-number-value]').should('contain', '222');
-        cy.get('[data-testid=email-value]').should('contain', 'me@test.com');
-        cy.get('[data-testid=dob-value]').should('contain', '1999-12-31');
-        cy.get('[data-testid=national-insurance-value]').should(
+        cy.get('[data-testid=parents-email-value]').should(
           'contain',
-          'AB111111C'
+          'me@test.com'
         );
+        cy.get('[data-testid=dob-value]').should('contain', '1999-12-31');
       });
     });
 
