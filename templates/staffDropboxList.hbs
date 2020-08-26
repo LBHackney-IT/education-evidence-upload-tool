@@ -68,8 +68,16 @@
 </div>
 <script>
   $(document).ready(function () {
-    $('#unarchived-table').DataTable();
-    $('#archived-table').DataTable();
+    $('#unarchived-table').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [3] },
+      ]
+    });
+    $('#archived-table').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [3] },
+      ]
+    });
   });
 </script>
 {{> footer isStaff=true }}

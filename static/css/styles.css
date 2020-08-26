@@ -80,3 +80,7 @@ section {
 .visually-hidden {
   display: none;
 }
+
+.tab-content {
+  padding-top: 20px;
+}
