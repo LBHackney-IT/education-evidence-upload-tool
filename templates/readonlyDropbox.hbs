@@ -1,17 +1,16 @@
 {{> header isProd=isProd feedbackFormUrl=feedbackFormUrl }}
 {{#if isStaff }}
-  <a href="/dropboxes" data-testid="dropbox-list-return-link">
-    << Back to all dropboxes</a> {{/if }}
-<div id="dropboxContents" data-testid="dropbox-details">
-  <strong>Child's name:</strong>
-  <p>{{ dropbox.customer.firstName }} {{ dropbox.customer.lastName }}</p>
-  <strong>Date of birth:</strong>
-  <p data-testid="dob-value">{{ dropbox.customer.dob }}</p>
-  <strong>Parent's email:</strong>
-  <p data-testid="parents-email-value">{{ dropbox.customer.parentsEmail }}</p>
-  <strong>Notes:</strong>
-  <p>{{ dropbox.description }}</p>
-  {{#if dropbox.hasUploads }}
+<a href="/dropboxes" data-testid="dropbox-list-return-link">
+  << Back to all dropboxes</a> {{/if }} <div id="dropboxContents" data-testid="dropbox-details">
+    <strong>Child's name:</strong>
+    <p>{{ dropbox.customer.firstName }} {{ dropbox.customer.lastName }}</p>
+    <strong>Date of birth:</strong>
+    <p data-testid="dob-value">{{ dropbox.customer.dob }}</p>
+    <strong>Parent's email:</strong>
+    <p data-testid="parents-email-value">{{ dropbox.customer.parentsEmail }}</p>
+    <strong>Notes:</strong>
+    <p>{{ dropbox.description }}</p>
+    {{#if dropbox.hasUploads }}
     <strong>Uploaded Documents:</strong>
     <ol>
       {{#each dropbox.uploads }}
@@ -25,12 +24,16 @@
     </div>
     <strong>Submitted on:</strong>
     <p>{{dateFormat dropbox.submitted}}</p>
+    {{#if dropbox.rejectReason}}
+    <strong data-testid="reject-reason-label-test">Reason for rejection</strong>
+    <p data-testid="reject-reason-details-test">{{dropbox.rejectReason}}</p>
+    {{/if}}
     {{#if isStaff }}
     {{#if dropbox.archived}}
     <strong>
       <p data-testid="archive-status-test">Status: Archived </p>
     </strong>
-    <form method="POST" action="/dropboxes/{{dropboxId}}/archive">
+    <form method="POST" action="/dropboxes/{{dropboxId}}/archive" class="inline-form">
       <input type="hidden" name="archiveStatus" value="" />
       <button class="btn btn-light" data-testid="unarchive-button-test">Unarchive</button>
     </form>
@@ -38,12 +41,32 @@
     <strong>
       <p data-testid="archive-status-test">Status: To review</p>
     </strong>
-    <form method="POST" action="/dropboxes/{{dropboxId}}/archive">
+    <form method="POST" action="/dropboxes/{{dropboxId}}/archive" class="inline-form">
       <input type="hidden" name="archiveStatus" value="true" />
       <button class="btn btn-light" data-testid="archive-button-test">Move to archive</button>
     </form>
     {{/if}}
+    {{#unless dropbox.rejectReason}}
+    <button id="reject-button" class="btn btn-danger" data-testid="reject-button-test">Reject</button>
+    <form hidden id="reject-form" method="POST" action="/dropboxes/{{dropboxId}}/reject">
+      <div class="form-group">
+        <p>
+          <label for="rejectReason">Reason for rejection</label>
+        </p>
+        <textarea class="form-control" data-testid="reject-reason-text-test" id="rejectReason" name="rejectReason"
+          rows="3" required></textarea>
+      </div>
+      <button class="btn btn-danger" data-testid="confirm-reject-button-test">Confirm rejection</button>
+    </form>
+    {{/unless}}
     {{else}}
     <a href="/restart" class="btn btn-block btn-lg btn-primary" role="button" id="startAgain">Start Again</a>
     {{/if }}
+    <script>
+      if (document.querySelector('#reject-button')) {
+        document.querySelector('#reject-button').addEventListener('click', () => {
+          document.querySelector("#reject-form").removeAttribute("hidden")
+        })
+      }
+    </script>
     {{> footer isStaff }}

@@ -257,5 +257,54 @@ context('Staff actions', () => {
           .should('contain', '1999');
       });
     });
+
+    describe('Reject dropbox', () => {
+      it('can reject a dropbox', () => {
+        cy.get('[data-testid=dropbox-link]')
+          .first()
+          .click();
+
+        cy.get('[data-testid=reject-reason-text-test]').should(
+          'not.be.visible'
+        );
+        cy.get('[data-testid=confirm-reject-button-test]').should(
+          'not.be.visible'
+        );
+
+        cy.get('[data-testid=reject-button-test]').click();
+        cy.get('[data-testid=reject-reason-text-test]').should('be.visible');
+        cy.get('[data-testid=confirm-reject-button-test]').should('be.visible');
+
+        cy.get('[data-testid=reject-reason-text-test]').type('blurry photos');
+        cy.get('[data-testid=confirm-reject-button-test]').click();
+
+        cy.get('[data-testid=reject-reason-label-test]').should(
+          'contain',
+          'Reason for rejection'
+        );
+        cy.get('[data-testid=reject-reason-details-test]').should(
+          'contain',
+          'blurry photos'
+        );
+
+        cy.get('[data-testid=archive-status-test]').should(
+          'contain',
+          'Status: Archived'
+        );
+        cy.get('[data-testid=reject-button-test]').should('not.exist');
+      });
+
+      it('cannot reject a dropbox with empty reason', () => {
+        cy.get('[data-testid=dropbox-link]')
+          .first()
+          .click();
+        cy.get('[data-testid=reject-button-test]').click();
+        cy.get('[data-testid=confirm-reject-button-test]').click();
+
+        cy.get('[data-testid=reject-reason-text-test]').then($input => {
+          expect($input[0].validationMessage).not.to.be.empty;
+        });
+      });
+    });
   });
 });

@@ -84,3 +84,7 @@ section {
 .tab-content {
   padding: 20px 2px 0 2px;
 }
+
+.inline-form {
+  display: inline;
+}

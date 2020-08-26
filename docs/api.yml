@@ -168,6 +168,28 @@ paths:
                 html:
                   summary: Redirects to the dropbox view page if the user is logged in and redirects to the log in page (/login) if the user is logged out
 
+  /dropboxes/:dropboxId/reject:
+    post:
+      operationId: reject-dropbox
+      summary: Allows the user to reject a dropbox
+      parameters:
+        - $ref: '#/components/parameters/dropboxId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rejectReason'
+      responses:
+        '302':
+          description: Found
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                html:
+                  summary: Rejects the dropbox and redirects to the dropbox view page if the user is logged in and redirects to the log in page (/login) if the user is logged out
+
   /login:
     get:
       operationId: user-login
@@ -284,3 +306,11 @@ components:
           type: boolean
           description: Value of the dropbox archived status
           example: true
+    rejectReason:
+      type: object
+      description: Reason for rejecting a dropbox
+      properties:
+        rejectReason:
+          type: string
+          description: Reason for rejecting a dropbox
+          example: 'blurry photos'
