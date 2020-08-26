@@ -193,13 +193,13 @@ context('Staff actions', () => {
         cy.get('[data-testid=dropbox-link]').should('have.length', 1);
       });
 
-      it('can search by first Name', () => {
+      it('can search by name', () => {
         cy.get('#unarchived-table_filter > label > input').type('Tim');
         cy.get('[data-testid=dropbox-link]').should('have.length', 7);
 
         cy.get('#unarchived-table_filter > label > input')
           .clear()
-          .type('Homer');
+          .type('Simpson');
         cy.get('[data-testid=dropbox-link]').should('have.length', 3);
       });
 
