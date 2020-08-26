@@ -15,6 +15,7 @@
           <th scope="col">Child's name</th>
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
+          <th scope="col">Submitted date</th>
           <th scope="col">Notes</th>
         </tr>
       </thead>
@@ -29,6 +30,7 @@
           </td>
           <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
+          <td>{{dateFormatNoTime this.submitted}}</td>
           <td>{{this.description}}</td>
         </tr>
         {{/unless}}
@@ -43,6 +45,7 @@
           <th scope="col">Child's name</th>
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
+          <th scope="col">Submitted date</th>
           <th scope="col">Notes</th>
           <th scope="col">Reason for rejection</th>
         </tr>
@@ -58,6 +61,7 @@
           </td>
           <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
+          <td>{{dateFormatNoTime this.submitted}}</td>
           <td>{{this.description}}</td>
           <td>{{this.rejectionReason}}</td>
         </tr>
