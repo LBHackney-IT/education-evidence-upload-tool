@@ -10,7 +10,8 @@ const {
   getSecureUploadUrl,
   getSession,
   templates,
-  updateArchiveStatus
+  updateArchiveStatus,
+  rejectDropbox
 } = require('./lib/Dependencies');
 
 const evt = (method, path, body, query) => {
@@ -269,7 +270,7 @@ describe('handler routes', () => {
     });
   });
 
-  describe('POST /dropboxes/:id/archive', () => {
+  describe('POST /dropboxes/:dropboxId/archive', () => {
     it('redirects to login if not logged in', async () => {
       authorize.mockImplementationOnce(() => false);
       const res = await handler(evt('POST', '/dropboxes/1/archive', {}));
@@ -285,6 +286,28 @@ describe('handler routes', () => {
       expect(updateArchiveStatus).toHaveBeenCalledWith({
         dropboxId: '1',
         archiveStatus: 'true'
+      });
+      expect(res.statusCode).toBe(302);
+      expect(res.headers.location).toBe('/dropboxes/1/view');
+    });
+  });
+
+  describe('POST /dropboxes/:dropboxId/reject', () => {
+    it('redirects to login if not logged in', async () => {
+      authorize.mockImplementationOnce(() => false);
+      const res = await handler(evt('POST', '/dropboxes/1/reject', {}));
+      expect(res.statusCode).toBe(302);
+      expect(res.headers.location).toBe('/login');
+    });
+
+    it('rejects the dropbox and redirects to view', async () => {
+      authorize.mockImplementationOnce(() => true);
+      const res = await handler(
+        evt('POST', '/dropboxes/1/reject', { rejectReason: 'Blurry photos' })
+      );
+      expect(rejectDropbox).toHaveBeenCalledWith({
+        dropboxId: '1',
+        rejectReason: 'Blurry photos'
       });
       expect(res.statusCode).toBe(302);
       expect(res.headers.location).toBe('/dropboxes/1/view');

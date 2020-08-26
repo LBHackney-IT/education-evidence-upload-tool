@@ -8,7 +8,8 @@ const {
   createSessionToken,
   templates,
   authorize,
-  updateArchiveStatus
+  updateArchiveStatus,
+  rejectDropbox
 } = require('./lib/Dependencies');
 const api = require('lambda-api')();
 
@@ -173,6 +174,18 @@ api.post(
       archiveStatus: req.body.archiveStatus
     });
 
+    return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
+  }
+);
+
+api.post(
+  '/dropboxes/:dropboxId/reject',
+  redirectToLoginIfNoAuth,
+  async (req, res) => {
+    await rejectDropbox({
+      dropboxId: req.params.dropboxId,
+      rejectReason: req.body.rejectReason
+    });
     return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
   }
 );
