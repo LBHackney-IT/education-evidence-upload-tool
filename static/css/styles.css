@@ -88,3 +88,8 @@ section {
 .inline-form {
   display: inline;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+}
