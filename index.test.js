@@ -278,14 +278,27 @@ describe('handler routes', () => {
       expect(res.headers.location).toBe('/login');
     });
 
-    it('updates the archive status and redirects to view', async () => {
+    it('updates the archive status and redirects to dropbox list if archiving', async () => {
       authorize.mockImplementationOnce(() => true);
       const res = await handler(
         evt('POST', '/dropboxes/1/archive', { archiveStatus: 'true' })
       );
       expect(updateArchiveStatus).toHaveBeenCalledWith({
         dropboxId: '1',
-        archiveStatus: 'true'
+        archiveStatus: true
+      });
+      expect(res.statusCode).toBe(302);
+      expect(res.headers.location).toBe('/dropboxes');
+    });
+
+    it('updates the archive status and redirects to view if unarchiving', async () => {
+      authorize.mockImplementationOnce(() => true);
+      const res = await handler(
+        evt('POST', '/dropboxes/1/archive', { archiveStatus: 'false' })
+      );
+      expect(updateArchiveStatus).toHaveBeenCalledWith({
+        dropboxId: '1',
+        archiveStatus: false
       });
       expect(res.statusCode).toBe(302);
       expect(res.headers.location).toBe('/dropboxes/1/view');

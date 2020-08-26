@@ -169,11 +169,14 @@ api.post(
   '/dropboxes/:dropboxId/archive',
   redirectToLoginIfNoAuth,
   async (req, res) => {
+    const archiveStatus = req.body.archiveStatus === 'true';
+
     await updateArchiveStatus({
       dropboxId: req.params.dropboxId,
-      archiveStatus: req.body.archiveStatus
+      archiveStatus
     });
 
+    if (archiveStatus) return res.redirect(`/dropboxes`);
     return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
   }
 );
@@ -186,6 +189,7 @@ api.post(
       dropboxId: req.params.dropboxId,
       rejectReason: req.body.rejectReason
     });
+
     return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
   }
 );
