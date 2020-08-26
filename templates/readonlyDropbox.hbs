@@ -26,8 +26,8 @@
     <strong>Submitted on:</strong>
     <p>{{dateFormat dropbox.submitted}}</p>
     {{#if dropbox.rejectReason}}
-    <strong>Reason for rejection</strong>
-    <p>{{dropbox.rejectReason}}</p>
+    <strong data-testid="reject-reason-label-test">Reason for rejection</strong>
+    <p data-testid="reject-reason-details-test">{{dropbox.rejectReason}}</p>
     {{/if}}
     {{#if isStaff }}
     {{#if dropbox.archived}}
@@ -54,9 +54,10 @@
         <p>
           <label for="rejectReason">Reason for rejection</label>
         </p>
-        <textarea class="form-control" id="rejectReason" name="rejectReason" rows="3" required></textarea>
+        <textarea class="form-control" data-testid="reject-reason-text-test" id="rejectReason" name="rejectReason"
+          rows="3" required></textarea>
       </div>
-      <button class="btn btn-danger" data-testid="reject-button-test">Confirm rejection</button>
+      <button class="btn btn-danger" data-testid="confirm-reject-button-test">Confirm rejection</button>
     </form>
     {{/unless}}
     {{else}}
