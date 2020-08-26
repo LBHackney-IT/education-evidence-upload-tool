@@ -64,7 +64,7 @@ context('Staff actions', () => {
           'contain',
           'me@test.com'
         );
-        cy.get('[data-testid=dob-value]').should('contain', '1999-12-31');
+        cy.get('[data-testid=dob-value]').should('contain', '31/12/1999');
       });
     });
 
@@ -150,7 +150,7 @@ context('Staff actions', () => {
         lastName: 'Jones',
         submitted: '2020-08-24T15:06:49.087Z',
         created: '2020-08-24T15:06:46.975Z',
-        dob: '1995-15-13',
+        dob: '1995-01-13',
         parentsEmail: 'you@test.com',
         description: 'These are for my other application'
       };
@@ -167,13 +167,13 @@ context('Staff actions', () => {
         });
         cy.task('createDropbox', {
           ...tableDropbox,
-          dob: '1994-15-13',
+          dob: '1994-01-13',
           dropboxId: '7',
           parentsEmail: 'you@sample.com'
         });
         cy.task('createDropbox', {
           ...tableDropbox,
-          dob: '1994-15-13',
+          dob: '1994-01-13',
           dropboxId: '8'
         });
         cy.task('createDropbox', {
@@ -204,7 +204,7 @@ context('Staff actions', () => {
       });
 
       it('can search by date of birth', () => {
-        cy.get('#unarchived-table_filter > label > input').type('1994-15-13');
+        cy.get('#unarchived-table_filter > label > input').type('13/01/1994');
         cy.get('[data-testid=dropbox-link]').should('have.length', 2);
 
         cy.get('#unarchived-table_filter > label > input')

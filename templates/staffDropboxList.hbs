@@ -27,7 +27,7 @@
               {{this.customer.firstName}} {{this.customer.lastName}}
             </a>
           </td>
-          <td data-testid="dob">{{this.customer.dob}}</td>
+          <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
           <td>{{this.description}}</td>
         </tr>
@@ -56,10 +56,10 @@
               {{this.customer.firstName}} {{this.customer.lastName}}
             </a>
           </td>
-          <td data-testid="dob">{{this.customer.dob}}</td>
+          <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
           <td>{{this.description}}</td>
-          <td>{{this.rejectReason}}</td>
+          <td>{{this.rejectionReason}}</td>
         </tr>
         {{/if}}
         {{/each}}
