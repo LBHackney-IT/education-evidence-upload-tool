@@ -20,18 +20,18 @@
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-          {{#unless this.archived}}
-            <tr>
-              <td scope="row">
-                <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
-                  {{this.customer.firstName}} {{this.customer.lastName}}
-                </a>
-              </td>
-              <td>{{this.customer.dob}}</td>
-              <td>{{this.customer.parentsEmail}}</td>
-              <td>{{this.description}}</td>
-            </tr>
-          {{/unless}}
+        {{#unless this.archived}}
+        <tr>
+          <td scope="row">
+            <a data-testid="dropbox-link" href="/dropboxes/{{this.id}}/view">
+              {{this.customer.firstName}} {{this.customer.lastName}}
+            </a>
+          </td>
+          <td>{{this.customer.dob}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
+        </tr>
+        {{/unless}}
         {{/each}}
       </tbody>
     </table>
@@ -44,22 +44,24 @@
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
           <th scope="col">Notes</th>
+          <th scope="col">Reason for rejection</th>
         </tr>
       </thead>
       <tbody data-testid="staff-dropboxes-list">
         {{#each dropboxes}}
-          {{#if this.archived}}
-            <tr>
-              <td scope="row">
-                <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
-                  {{this.customer.firstName}} {{this.customer.lastName}}
-                </a>
-              </td>
-              <td>{{this.customer.dob}}</td>
-              <td>{{this.customer.parentsEmail}}</td>
-              <td>{{this.description}}</td>
-            </tr>
-          {{/if}}
+        {{#if this.archived}}
+        <tr>
+          <td scope="row">
+            <a data-testid="archived-dropbox-link" href="/dropboxes/{{this.id}}/view">
+              {{this.customer.firstName}} {{this.customer.lastName}}
+            </a>
+          </td>
+          <td>{{this.customer.dob}}</td>
+          <td>{{this.customer.parentsEmail}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.rejectReason}}</td>
+        </tr>
+        {{/if}}
         {{/each}}
       </tbody>
     </table>
