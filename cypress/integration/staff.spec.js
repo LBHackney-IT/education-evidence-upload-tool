@@ -217,15 +217,15 @@ context('Staff actions', () => {
       });
 
       it('can sort by name', () => {
-        cy.get('#unarchived-table > thead > tr > th.sorting_asc').click();
-        cy.get('[data-testid=dropbox-link]')
-          .first()
-          .should('contain', 'Tim Jones');
-
-        cy.get('#unarchived-table > thead > tr > th.sorting_desc').click();
+        cy.get('#unarchived-table > thead > tr > th:nth-child(1)').click();
         cy.get('[data-testid=dropbox-link]')
           .first()
           .should('contain', 'Homer Simpson');
+
+        cy.get('#unarchived-table > thead > tr > th:nth-child(1)').click();
+        cy.get('[data-testid=dropbox-link]')
+          .first()
+          .should('contain', 'Tim Jones');
       });
 
       it('can sort by date of birth', () => {

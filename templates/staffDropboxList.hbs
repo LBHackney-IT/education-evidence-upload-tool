@@ -16,7 +16,6 @@
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
           <th scope="col">Submitted</th>
-          <th scope="col">Notes</th>
         </tr>
       </thead>
       <tbody data-testid="staff-dropboxes-list">
@@ -31,7 +30,6 @@
           <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
           <td>{{dateFormatNoTime this.submitted}}</td>
-          <td>{{this.description}}</td>
         </tr>
         {{/unless}}
         {{/each}}
@@ -46,7 +44,6 @@
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
           <th scope="col">Submitted</th>
-          <th scope="col">Notes</th>
           <th scope="col">Reason for rejection</th>
         </tr>
       </thead>
@@ -62,8 +59,7 @@
           <td data-testid="dob">{{dateFormatNoTime this.customer.dob}}</td>
           <td>{{this.customer.parentsEmail}}</td>
           <td>{{dateFormatNoTime this.submitted}}</td>
-          <td>{{this.description}}</td>
-          <td>{{this.rejectionReason}}</td>
+          <td>{{this.rejectReason}}</td>
         </tr>
         {{/if}}
         {{/each}}
@@ -75,15 +71,9 @@
 <script>
   $(function () {
     $('#unarchived-table').DataTable({
-      "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [4] },
-      ],
       "order": []
     });
     $('#archived-table').DataTable({
-      "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [4] },
-      ],
       "order": []
     });
   });
