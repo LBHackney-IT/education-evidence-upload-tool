@@ -101,12 +101,12 @@ context('Customer Actions', () => {
       const files = [
         {
           filename: 'foo.txt',
-          description: 'Council Tax letter',
+          description: 'Council tax letter',
           contents: 'hello'
         },
         {
           filename: 'foo2.txt',
-          description: 'Proof of Address',
+          description: 'Proof of address',
           contents: 'hello again'
         }
       ];
