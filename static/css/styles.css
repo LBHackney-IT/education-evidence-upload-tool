@@ -56,7 +56,6 @@ section {
 
 .banner {
   text-align: center;
-  background-color: #fcf8e3;
   padding: 10px 0;
   font-size: 0.9em;
 }
@@ -95,4 +94,32 @@ section {
 .error {
   color: red;
   font-weight: bold;
+}
+
+.btn-danger {
+  background-color: #ad0009;
+  border-color: #ad0009;
+}
+
+.dropbox-link,
+.dropbox-link:hover,
+.document-link,
+.document-link:hover {
+  text-decoration: underline;
+  color: #275a86;
+}
+.breadcrumb-item a {
+  color: #275a86;
+}
+.breadcrumb-item.active {
+  color: black;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+  color: black;
+}
+
+#reject-form {
+  padding-top: 20px;
 }
