@@ -96,7 +96,7 @@ context('Staff actions', () => {
 
         cy.get('[data-testid=archive-status-test]').should(
           'contain',
-          'Status: To review'
+          'Status: to review'
         );
 
         cy.get('[data-testid=archive-button-test]').click();
@@ -119,14 +119,14 @@ context('Staff actions', () => {
 
         cy.get('[data-testid=archive-status-test]').should(
           'contain',
-          'Status: Archived'
+          'Status: archived'
         );
 
         cy.get('[data-testid=unarchive-button-test]').click();
 
         cy.get('[data-testid=archive-status-test]').should(
           'contain',
-          'Status: To review'
+          'Status: to review'
         );
 
         cy.get('[data-testid=dropbox-list-return-link]').click();
@@ -272,7 +272,7 @@ context('Staff actions', () => {
 
         cy.get('[data-testid=archive-status-test]').should(
           'contain',
-          'Status: Archived'
+          'Status: archived'
         );
         cy.get('[data-testid=reject-button-test]').should('not.exist');
       });
