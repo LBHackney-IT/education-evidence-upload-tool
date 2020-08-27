@@ -15,7 +15,7 @@
           <th scope="col">Child's name</th>
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
-          <th scope="col">Submitted date</th>
+          <th scope="col">Submitted</th>
           <th scope="col">Notes</th>
         </tr>
       </thead>
@@ -45,7 +45,7 @@
           <th scope="col">Child's name</th>
           <th scope="col">Date of birth</th>
           <th scope="col">Parent's email</th>
-          <th scope="col">Submitted date</th>
+          <th scope="col">Submitted</th>
           <th scope="col">Notes</th>
           <th scope="col">Reason for rejection</th>
         </tr>
@@ -74,11 +74,17 @@
 </div>
 <script>
   $(function () {
-    $('#unarchived-table').DataTable();
+    $('#unarchived-table').DataTable({
+      "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [4] },
+      ],
+      "order": []
+    });
     $('#archived-table').DataTable({
       "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [3] },
-      ]
+        { "bSortable": false, "aTargets": [4] },
+      ],
+      "order": []
     });
   });
 </script>
