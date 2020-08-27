@@ -4,7 +4,7 @@ const {
   saveDropbox,
   sendConfirmationEmail
 } = require('./lib/Dependencies');
-
+const log = require('./lib/log')();
 module.exports = {
   handler: async event => {
     try {
@@ -27,7 +27,7 @@ module.exports = {
         headers: { Location: `/dropboxes/${dropboxId}` }
       };
     } catch (err) {
-      console.log(err);
+      log.error('Saving dropbox failed', err);
     }
   }
 };

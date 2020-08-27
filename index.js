@@ -12,6 +12,7 @@ const {
   rejectDropbox
 } = require('./lib/Dependencies');
 const api = require('lambda-api')();
+const log = require('./lib/log')();
 
 const redirectToDropboxesIfAuth = (req, res, next) => {
   if (authorize(req)) return res.redirect('/dropboxes');
@@ -24,7 +25,7 @@ const redirectToLoginIfNoAuth = (req, res, next) => {
 };
 
 api.use(async (req, res, next) => {
-  console.log(`REQUEST: { method: ${req.method}, path: ${req.path} }`);
+  log.info('REQUEST', { method: req.method, path: req.path });
   next();
 });
 
@@ -169,14 +170,11 @@ api.post(
   '/dropboxes/:dropboxId/archive',
   redirectToLoginIfNoAuth,
   async (req, res) => {
-    const archiveStatus = req.body.archiveStatus === 'true';
-
     await updateArchiveStatus({
       dropboxId: req.params.dropboxId,
-      archiveStatus
+      archiveStatus: req.body.archiveStatus
     });
 
-    if (archiveStatus) return res.redirect(`/dropboxes`);
     return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
   }
 );
@@ -189,7 +187,6 @@ api.post(
       dropboxId: req.params.dropboxId,
       rejectReason: req.body.rejectReason
     });
-
     return res.redirect(`/dropboxes/${req.params.dropboxId}/view`);
   }
 );
