@@ -12,7 +12,7 @@ const {
   rejectDropbox
 } = require('./lib/Dependencies');
 const api = require('lambda-api')();
-
+const log = require('./lib/log')();
 const redirectToDropboxesIfAuth = (req, res, next) => {
   if (authorize(req)) return res.redirect('/dropboxes');
   next();
@@ -24,7 +24,7 @@ const redirectToLoginIfNoAuth = (req, res, next) => {
 };
 
 api.use(async (req, res, next) => {
-  console.log(`REQUEST: { method: ${req.method}, path: ${req.path} }`);
+  log.info('REQUEST', { method: req.method, path: req.path });
   next();
 });
 
