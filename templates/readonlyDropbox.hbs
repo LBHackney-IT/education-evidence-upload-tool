@@ -56,9 +56,9 @@
 {{#unless dropbox.rejectReason}}
 <button id="reject-button" class="btn btn-danger" data-testid="reject-button-test">Reject</button>
 <form hidden id="reject-form" method="POST" action="/dropboxes/{{dropboxId}}/reject">
-  <strong>
-    <p>Reason for rejection</p>
-  </strong>
+  <label for="rejectReason">
+    Reason for rejection:
+  </label>
   <textarea class="form-control" data-testid="reject-reason-text-test" id="rejectReason" name="rejectReason" rows="3"
     required></textarea>
   <br />

@@ -29,7 +29,7 @@ module.exports = (on, config) => {
     createDropbox(dropbox) {
       return client
         .put({
-          TableName: 'education-evidence-upload-tool-test-dropboxes',
+          TableName: 'education-evidence-upload-tool-dev-dropboxes',
           Item: dropbox
         })
         .promise();
@@ -38,7 +38,7 @@ module.exports = (on, config) => {
       return new Promise((resolve, reject) => {
         client.scan(
           {
-            TableName: 'education-evidence-upload-tool-test-dropboxes'
+            TableName: 'education-evidence-upload-tool-dev-dropboxes'
           },
           (err, data) => {
             if (err) {
@@ -52,7 +52,7 @@ module.exports = (on, config) => {
               console.log(dropbox);
               client
                 .delete({
-                  TableName: 'education-evidence-upload-tool-test-dropboxes',
+                  TableName: 'education-evidence-upload-tool-dev-dropboxes',
                   Key: { dropboxId: dropbox.dropboxId }
                 })
                 .promise();
