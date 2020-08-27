@@ -101,13 +101,6 @@ context('Staff actions', () => {
 
         cy.get('[data-testid=archive-button-test]').click();
 
-        cy.get('[data-testid=archive-status-test]').should(
-          'contain',
-          'Status: Archived'
-        );
-
-        cy.get('[data-testid=dropbox-list-return-link]').click();
-
         cy.get('[data-testid=dropboxes-to-review-test]').should(
           'contain',
           '(2)'
@@ -221,16 +214,6 @@ context('Staff actions', () => {
           .clear()
           .type('@sam');
         cy.get('[data-testid=dropbox-link]').should('have.length', 1);
-      });
-
-      it('can search by description', () => {
-        cy.get('#unarchived-table_filter > label > input').type('not');
-        cy.get('[data-testid=dropbox-link]').should('have.length', 1);
-
-        cy.get('#unarchived-table_filter > label > input')
-          .clear()
-          .type('other application');
-        cy.get('[data-testid=dropbox-link]').should('have.length', 8);
       });
 
       it('can sort by name', () => {

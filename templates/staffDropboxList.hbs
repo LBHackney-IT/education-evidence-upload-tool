@@ -73,12 +73,8 @@
 </div>
 </div>
 <script>
-  $(document).ready(function () {
-    $('#unarchived-table').DataTable({
-      "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [3] },
-      ]
-    });
+  $(function () {
+    $('#unarchived-table').DataTable();
     $('#archived-table').DataTable({
       "aoColumnDefs": [
         { "bSortable": false, "aTargets": [3] },

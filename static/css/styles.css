@@ -82,9 +82,14 @@ section {
 }
 
 .tab-content {
-  padding: 20px 2px 0 2px;
+  padding: 10px 4px 0 4px;
 }
 
 .inline-form {
   display: inline;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }
