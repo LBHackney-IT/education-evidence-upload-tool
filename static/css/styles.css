@@ -22,7 +22,10 @@ footer {
 }
 
 footer a,
-footer a:hover {
+footer a:hover,
+footer a:link,
+footer a:visited,
+footer a:active {
   color: #fff;
   text-decoration: underline;
 }
